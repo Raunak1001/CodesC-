@@ -1,6 +1,6 @@
 #include<iostream>
 #include<list>
-
+#include<stack>
 using namespace std;
 
 class Graph{
@@ -23,7 +23,8 @@ public:
   }
 
 
-  void DFSUtil(int ver,bool* visited){
+  void DFSUtil(int ver,bool* visited,stack<int> &s){
+
 
     visited[ver]=true;
     std::cout << ver <<" ";
@@ -31,16 +32,18 @@ public:
     list<int>::iterator i;
     for(i=adj[ver].begin();i!=adj[ver].end();++i){
       if(visited[*i]==false){
-        DFSUtil(*i,visited);
+        DFSUtil(*i,visited,s);
 
       }
     }
+    s.push(ver);
 
 
   }
 
   void DFS(){
 
+    stack<int> s;
     bool visited[v];
 
     for(int i=0; i<v; i++)
@@ -51,12 +54,18 @@ public:
     for(int i=0;i<v; i++){
       if(visited[i]==false){
 
-        DFSUtil(i,visited);
+        DFSUtil(i,visited,s);
 
       }
 
     }
+    std::cout <<endl<< "Toplogical Sort"<< std::endl;
+    while(!s.empty()){
 
+      cout<<s.top()<<" ";
+      s.pop();
+    }
+    
   }
 
 };
@@ -64,14 +73,21 @@ public:
 
 int main(){
 
-  Graph g(4);
-  g.addEdge(0, 1);
+  Graph g(6);
+  /*  g.addEdge(0, 1);
   g.addEdge(0, 2);
   g.addEdge(1, 2);
   g.addEdge(2, 0);
   g.addEdge(2, 3);
   g.addEdge(3, 3);
+  */
 
+  g.addEdge(5, 2);
+  g.addEdge(5, 0);
+  g.addEdge(4, 0);
+  g.addEdge(4, 1);
+  g.addEdge(2, 3);
+  g.addEdge(3, 1);
   cout << "Following is Depth First Traversal\n";
   g.DFS();
 
